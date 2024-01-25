@@ -3,15 +3,15 @@ import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBe7d9bllq8RnmI6xxEBk3oub3qogPT2aM",
-    authDomain: "thinkwise-c7673.firebaseapp.com",
-    databaseURL: "https://thinkwise-c7673-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "thinkwise-c7673",
-    storageBucket: "thinkwise-c7673.appspot.com",
-    messagingSenderId: "37732571551",
-    appId: "1:37732571551:web:9b90a849ac5454f33a85aa",
-    measurementId: "G-8957WM4SB7"
-  };
+  apiKey: "AIzaSyBe7d9bllq8RnmI6xxEBk3oub3qogPT2aM",
+  authDomain: "thinkwise-c7673.firebaseapp.com",
+  databaseURL: "https://thinkwise-c7673-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "thinkwise-c7673",
+  storageBucket: "thinkwise-c7673.appspot.com",
+  messagingSenderId: "37732571551",
+  appId: "1:37732571551:web:9b90a849ac5454f33a85aa",
+  measurementId: "G-8957WM4SB7"
+};
   
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
@@ -27,6 +27,18 @@ descEl = document.querySelector('textarea'),
 addBtn = document.querySelector('button ');
 
 
+onAuthStateChanged(auth, (user) => {  
+  if (user) {
+    console.log("User is signed in with UID:", user.uid);
+    showNotes();
+  } else {
+    console.log("No user is signed in.");
+    redirectToLogin();
+  }
+});
+
+showNotes();
+
 
 const months= ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -36,6 +48,7 @@ let isUpdate = false, updateId;
 function showNotes() {
   const user = auth.currentUser;
   if(user){
+    console.log(user.uid)
     const notesRef = collection(db, "users", user.uid, "notes");
     getDocs(notesRef).then(querySnapshot => {
       notesArr.length = 0;
@@ -62,15 +75,12 @@ function showNotes() {
     }).catch(error => {
       console.error("Error loading notes: ", error);
     });
-  }
+   } 
 }
 
 function redirectToLogin() {
   window.location.href = 'https://benjiwurfl.github.io/Login/';
 }
-
-
-showNotes();
 
 function deleteNote(noteId) {
     let confirmDelete= confirm("Are you sure you want to delete this note?");
@@ -116,7 +126,6 @@ addBtn.addEventListener('click', (e)=>{
         day = dateEl.getDate(),
         year = dateEl.getFullYear();
 
-
         const newNote = {
             title: noteTitle,
             body: noteDesc,
@@ -137,12 +146,13 @@ addBtn.addEventListener('click', (e)=>{
 });
 
 function addNoteToFirestore(newNote) {
-  const user = auth.currentUser;
-  if (!user) {
+  const userUID = "YoFPYLvv8VbD5S04AODlibh55xN2";
+  /*if (!user) {
     alert("You must be logged in to add events.");
     return;
-  }
-  const notesRef = collection(db, "users", user.uid, "notes");
+  }*/
+
+  const notesRef = collection(db, "users", userUID, "notes");
   addDoc(notesRef, newNote).then(docRef => {
     console.log("Added note with ID: ", docRef.id);
     newNote.id = docRef.id;
@@ -151,7 +161,7 @@ function addNoteToFirestore(newNote) {
   }).catch(error => {
     console.error("Error adding event: ", error);
   });
-
+  
   addEventWrapper.classList.remove("active");
   addEventTitle.value = "";
   addEventDescription.value = "";
@@ -177,17 +187,3 @@ function updateNotes(){
     addBox.insertAdjacentHTML('afterend', liEl);
   });
 }
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // Der Benutzer ist angemeldet und `user.uid` ist verfügbar.
-    console.log("User is signed in with UID:", user.uid);
-    // Hier können Sie Funktionen aufrufen, die die UID verwenden.
-    showNotes();
-  } else {
-    // Kein Benutzer ist angemeldet.
-    console.log("No user is signed in.");
-    //NotesAPI.redirectToLogin();
-    redirectToLogin();
-  }
-});
