@@ -33,7 +33,7 @@ onAuthStateChanged(auth, (user) => {
     showNotes();
   } else {
     console.log("No user is signed in.");
-    redirectToLogin();
+    //redirectToLogin();
   }
 });
 
