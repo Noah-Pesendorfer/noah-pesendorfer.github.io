@@ -1,22 +1,22 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, getDoc, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBe7d9bllq8RnmI6xxEBk3oub3qogPT2aM",
-  authDomain: "thinkwise-c7673.firebaseapp.com",
-  databaseURL: "https://thinkwise-c7673-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "thinkwise-c7673",
-  storageBucket: "thinkwise-c7673.appspot.com",
-  messagingSenderId: "37732571551",
-  appId: "1:37732571551:web:9b90a849ac5454f33a85aa",
-  measurementId: "G-8957WM4SB7"
+    apiKey: "AIzaSyBe7d9bllq8RnmI6xxEBk3oub3qogPT2aM",
+    authDomain: "thinkwise-c7673.firebaseapp.com",
+    databaseURL: "https://thinkwise-c7673-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "thinkwise-c7673",
+    storageBucket: "thinkwise-c7673.appspot.com",
+    messagingSenderId: "37732571551",
+    appId: "1:37732571551:web:9b90a849ac5454f33a85aa",
+    measurementId: "G-8957WM4SB7"
 };
-  
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-  const notesArr = [];
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const notesArr = [];
 
 const addBox = document.querySelector('.add-box'),
 popupBox = document.querySelector('.popup-box'),
@@ -26,20 +26,15 @@ titleEl = document.querySelector('input'),
 descEl = document.querySelector('textarea'),
 addBtn = document.querySelector('button ');
 
-
-onAuthStateChanged(auth, (user) => {  
-  console.log("Auth state changed:", user);
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    console.log("User is signed in with UID:", user.uid);
-    showNotes();
+      console.log("User is signed in with UID:", user.uid);
+      showNotes();
   } else {
-    console.log("No user is signed in.");
-    //redirectToLogin();
+      console.log("No user is signed in.");
+      redirectToLogin();
   }
 });
-
-showNotes();
-
 
 const months= ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
