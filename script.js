@@ -16,6 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
+const user = auth.currentUser;
 const notesArr = [];
 
 const addBox = document.querySelector('.add-box'),
@@ -41,7 +42,6 @@ const notes = JSON.parse(localStorage.getItem('notes') || '[]');
 let isUpdate = false, updateId;
 
 function showNotes() {
-  const user = auth.currentUser;
   if(user){
     console.log(user.uid)
     const notesRef = collection(db, "users", user.uid, "notes");
