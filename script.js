@@ -28,6 +28,7 @@ addBtn = document.querySelector('button ');
 
 
 onAuthStateChanged(auth, (user) => {  
+  console.log("Auth state changed:", user);
   if (user) {
     console.log("User is signed in with UID:", user.uid);
     showNotes();
