@@ -19,8 +19,6 @@ const auth = getAuth();
 const user = auth.currentUser;
 const notesArr = [];
 
-console.log(user.uid)
-
 const addBox = document.querySelector('.add-box'),
 popupBox = document.querySelector('.popup-box'),
 popupTitle = popupBox.querySelector('header p'),
@@ -29,16 +27,17 @@ titleEl = document.querySelector('input'),
 descEl = document.querySelector('textarea'),
 addBtn = document.querySelector('button ');
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
+auth.onAuthStateChanged(user => {
+  console.log(user)
+  /*if (user) {
       console.log("User is signed in with UID:", user.uid);
       showNotes();
   } else {
       console.log("No user is signed in.");
-  }
+  }*/
 });
 
-const months= ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+const months= ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 const notes = JSON.parse(localStorage.getItem('notes') || '[]');
 let isUpdate = false, updateId;
