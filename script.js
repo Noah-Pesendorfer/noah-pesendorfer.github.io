@@ -5,7 +5,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 const firebaseConfig = {
     apiKey: "AIzaSyBe7d9bllq8RnmI6xxEBk3oub3qogPT2aM",
     authDomain: "thinkwise-c7673.firebaseapp.com",
-    databaseURL: "https://thinkwise-c7673-default-rtdb.europe-west1.firebasedatabase.app",
+    databaseURL: "https://thinkwise-c7673-default-rtdb.europe-west1.firebasedatabase.app/",
     projectId: "thinkwise-c7673",
     storageBucket: "thinkwise-c7673.appspot.com",
     messagingSenderId: "37732571551",
@@ -14,9 +14,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+console.log("Firebase app initialized:", app);
 const db = getFirestore(app);
 const auth = getAuth();
-const user = auth.currentUser;
 const notesArr = [];
 
 const addBox = document.querySelector('.add-box'),
@@ -27,14 +27,13 @@ titleEl = document.querySelector('input'),
 descEl = document.querySelector('textarea'),
 addBtn = document.querySelector('button ');
 
-auth.onAuthStateChanged(user => {
-  console.log(user)
-  /*if (user) {
+onAuthStateChanged(auth, (user) => {
+  if (user) {
       console.log("User is signed in with UID:", user.uid);
       showNotes();
   } else {
       console.log("No user is signed in.");
-  }*/
+  }
 });
 
 const months= ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -43,6 +42,7 @@ const notes = JSON.parse(localStorage.getItem('notes') || '[]');
 let isUpdate = false, updateId;
 
 function showNotes() {
+  const user = auth.currentUser;
   if(user){
     console.log(user.uid)
     const notesRef = collection(db, "users", user.uid, "notes");
