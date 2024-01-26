@@ -32,7 +32,6 @@ onAuthStateChanged(auth, (user) => {
       showNotes();
   } else {
       console.log("No user is signed in.");
-      redirectToLogin();
   }
 });
 
@@ -72,10 +71,6 @@ function showNotes() {
       console.error("Error loading notes: ", error);
     });
    } 
-}
-
-function redirectToLogin() {
-  window.location.href = 'https://benjiwurfl.github.io/Login/';
 }
 
 function deleteNote(noteId) {
