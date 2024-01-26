@@ -19,6 +19,8 @@ const auth = getAuth();
 const user = auth.currentUser;
 const notesArr = [];
 
+console.log(user.uid)
+
 const addBox = document.querySelector('.add-box'),
 popupBox = document.querySelector('.popup-box'),
 popupTitle = popupBox.querySelector('header p'),
